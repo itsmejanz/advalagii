@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - NYMATE</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        .auth-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .auth-logo {
+            font-size: 36px;
+            color: #D1C4E9;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .auth-sub {
+            color: #888;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            width: 100%;
+            margin-bottom: 12px;
+        }
+
+        .auth-input {
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 20px;
+            border: none;
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            outline: none;
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 15px;
+            border-radius: 20px;
+            border: none;
+            background-color: #A8D8EA;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(168, 216, 234, 0.4);
+        }
+
+        .auth-footer {
+            margin-top: 25px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .auth-footer a {
+            color: #D1C4E9;
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="mobile-container">
+    <div class="auth-wrapper">
+
+        <div class="auth-logo">JOIN NYMATE</div>
+        <p class="auth-sub">Create your account to start gathering!</p>
+
+        <!-- ✅ FORM SUDAH FIX -->
+        <form action="daftar_api.php" method="POST" style="width: 100%;">
+
+            <div class="form-group">
+                <input type="text" name="nama" class="auth-input" placeholder="Full Name" required>
+            </div>
+
+            <div class="form-group">
+                <input type="text" name="username" class="auth-input" placeholder="Username" required>
+            </div>
+
+            <div class="form-group">
+                <input type="email" name="email" class="auth-input" placeholder="Email Address" required>
+            </div>
+
+            <div class="form-group">
+                <input type="password" name="password" class="auth-input" placeholder="Password" required>
+            </div>
+
+            <button type="submit" class="auth-btn">REGISTER</button>
+
+        </form>
+
+        <div class="auth-footer">
+            Already have an account? 
+            <a href="login.html">Login here</a>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

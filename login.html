@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - NYMATE</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        .auth-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 20px;
+            text-align: center;
+        }
+        .auth-logo {
+            font-size: 40px;
+            color: #87CEEB;
+            margin-bottom: 10px;
+            font-weight: 600;
+            text-shadow: 2px 2px rgba(0,0,0,0.05);
+        }
+        .auth-sub {
+            color: #888;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .form-group {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        .auth-input {
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 20px;
+            border: none;
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            font-size: 14px;
+            outline: none;
+        }
+        .auth-btn {
+            width: 100%;
+            padding: 15px;
+            border-radius: 20px;
+            border: none;
+            background-color: #FFD54F; /* Kuning cerah */
+            color: #333;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(255, 213, 79, 0.4);
+        }
+        .auth-footer {
+            margin-top: 25px;
+            font-size: 13px;
+            color: #666;
+        }
+        .auth-footer a {
+            color: #81D4FA;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .character-img {
+            width: 120px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-container">
+        <div class="auth-wrapper">
+            <!-- Tempat untuk gambar maskot Nymo nanti -->
+            <div class="auth-logo">NYMATE!</div>
+            <p class="auth-sub">Welcome back, mate!</p>
+
+            <form action="login_api.php" method="POST" style="width: 100%;">
+
+    <div class="form-group">
+        <input type="email" name="email" class="auth-input" placeholder="Email" required>
+    </div>
+
+    <div class="form-group">
+        <input type="password" name="password" class="auth-input" placeholder="Password" required>
+    </div>
+
+    <button type="submit" class="auth-btn">LOGIN</button>
+
+</form>
+
+            <div class="auth-footer">
+                Don't have an account? <a href="daftar.html">Sign Up</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

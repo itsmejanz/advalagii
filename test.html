@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Deteksi DBD</title>
+</head>
+<body>
+
+<h2>Deteksi Zona DBD</h2>
+<button onclick="cekLokasi()">Cek Lokasi Saya</button>
+
+<p id="hasil"></p>
+
+<script>
+function cekLokasi() {
+    navigator.geolocation.getCurrentPosition(function(position) {
+
+        let lat = position.coords.latitude;
+        let lon = position.coords.longitude;
+
+        // sementara kita hardcode (nanti bisa pakai API geocoding)
+        let data = {
+            kota: "JAKARTA TIMUR",
+            kecamatan: "CIPINANG MELAYU",
+            bulan: new Date().getMonth() + 1
+        };
+
+        fetch("http://127.0.0.1:5000/predict", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        .then(res => res.json())
+        .then(res => {
+            document.getElementById("hasil").innerText =
+                "Zona: " + res.zona;
+        });
+
+    });
+}
+</script>
+
+</body>
+</html>

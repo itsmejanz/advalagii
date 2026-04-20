@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotspot of the Month</title>
+    <!-- Font yang mirip dengan di gambar -->
+    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Nunito:wght@900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --blue-bg: #0077C0;
+            --page-bg: #FDF5E6;
+            --red-box: #F26D50;
+            --yellow-box: #FFDC62;
+            --green-box: #C6DB8B;
+            --red-btn: #D32F2F;
+            --orange-btn: #FF8F00;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--page-bg);
+            font-family: 'Nunito', sans-serif;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            min-height: 100vh;
+        }
+
+        /* Header Section */
+        .header {
+            background-color: var(--blue-bg);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .back-arrow {
+            font-size: 40px;
+            margin-right: 15px;
+            line-height: 0;
+            cursor: pointer;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-family: 'Luckiest Guy', cursive;
+            font-size: 24px;
+            letter-spacing: 1.5px;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+        }
+
+        /* Content Wrapper */
+        .content {
+            padding: 20px 15px;
+        }
+
+        /* Zone Title Global */
+        .zone-title {
+            text-align: center;
+            font-family: 'Luckiest Guy', cursive;
+            font-size: 32px;
+            color: white;
+            -webkit-text-stroke: 1.5px #444; /* Efek outline */
+            margin-bottom: 5px;
+            letter-spacing: 2px;
+        }
+
+        /* Box Styling */
+        .zone-card {
+            border-radius: 15px;
+            padding: 10px 15px;
+            margin-bottom: 30px;
+            border: 3px solid rgba(0,0,0,0.1);
+        }
+
+        .red-bg { background-color: var(--red-box); border-color: #C0392B; }
+        .yellow-bg { background-color: var(--yellow-box); border-color: #F39C12; }
+        .green-bg { background-color: var(--green-box); border-color: #7D8C55; }
+
+        /* List Items */
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 2px solid rgba(0,0,0,0.1);
+        }
+
+        .list-item:last-child {
+            border-bottom: none;
+        }
+
+        .location-name {
+            font-weight: 900;
+            font-size: 18px;
+            color: #333;
+            text-transform: uppercase;
+        }
+
+        /* Button Styling */
+        .btn-volunteer {
+            font-family: 'Luckiest Guy', cursive;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 0px rgba(0,0,0,0.2);
+            transition: transform 0.1s;
+        }
+
+        .btn-volunteer:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0px rgba(0,0,0,0.2);
+        }
+
+        /* Warna Tombol Spesifik */
+        .red-bg .btn-volunteer { background-color: var(--red-btn); }
+        .yellow-bg .btn-volunteer { background-color: var(--orange-btn); }
+        .green-bg .btn-volunteer { background-color: var(--orange-btn); } /* Tombol ditambahkan ke Green Zone */
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header class="header">
+        <div class="back-arrow">&#8249;</div>
+        <h1>HOTSPOT OF THE MONTH</h1>
+    </header>
+
+    <div class="content">
+        
+        <!-- RED ZONE -->
+        <h2 class="zone-title">RED ZONE</h2>
+        <div class="zone-card red-bg">
+            <div class="list-item">
+                <span class="location-name">JAKARTA BARAT</span>
+                <button class="btn-volunteer">JOIN VOLUNTEERING</button>
+            </div>
+            <div class="list-item">
+                <span class="location-name">JAKARTA TIMUR</span>
+                <button class="btn-volunteer">JOIN VOLUNTEERING</button>
+            </div>
+            <div class="list-item">
+                <span class="location-name">JAKARTA SELATAN</span>
+                <button class="btn-volunteer">JOIN VOLUNTEERING</button>
+            </div>
+        </div>
+
+        <!-- YELLOW ZONE -->
+        <h2 class="zone-title">YELLOW ZONE</h2>
+        <div class="zone-card yellow-bg">
+            <div class="list-item">
+                <span class="location-name">1. JAKARTA BARAT</span>
+                <button class="btn-volunteer">JOIN VOLUNTEERING</button>
+            </div>
+            <div class="list-item">
+                <span class="location-name">2. JAKARTA TIMUR</span>
+                <button class="btn-volunteer">JOIN VOLUNTEERING</button>
+            </div>
+            <div class="list-item">
+                <span class="location-name">3. JAKARTA SELATAN</span>
+                <button class="btn-volunteer">JOIN VOLUNTEERING</button>
+            </div>
+        </div>
+
+        <!-- GREEN ZONE (Tanpa Maskot) -->
+        <h2 class="zone-title">GREEN ZONE</h2>
+        <div class="zone-card green-bg">
+            <div class="list-item">
+                <span class="location-name">1. JAKARTA BARAT</span>
+                <button class="btn-volunteer">JOIN VOLUNTEERING</button>
+            </div>
+            <div class="list-item">
+                <span class="location-name">2. JAKARTA TIMUR</span>
+                <button class="btn-volunteer">JOIN VOLUNTEERING</button>
+            </div>
+            <div class="list-item">
+                <span class="location-name">3. JAKARTA SELATAN</span>
+                <button class="btn-volunteer">JOIN VOLUNTEERING</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

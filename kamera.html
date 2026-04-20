@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nymo Camera - Snapchat Style</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Container Kamera Full Screen */
+        .camera-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            overflow: hidden;
+        }
+
+        #video-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Agar video memenuhi layar seperti Snapchat */
+            transform: scaleX(-1); /* Mirror effect untuk kamera depan */
+        }
+
+        /* Overlay Tombol Atas */
+        .camera-top-tools {
+            position: absolute;
+            top: 50px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 10;
+        }
+
+        .tool-btn {
+            background: rgba(0, 0, 0, 0.3);
+            border: none;
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Shutter Button (Tombol Jepret) */
+        .shutter-container {
+            position: absolute;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .shutter-btn {
+            width: 80px;
+            height: 80px;
+            background-color: transparent;
+            border: 6px solid white;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .shutter-btn:active {
+            transform: scale(0.9);
+            border-width: 10px;
+        }
+
+        .shutter-inner {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+        }
+
+        /* Filter Selector (Bawah) */
+        .filter-scroll {
+            position: absolute;
+            bottom: 115px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 10px;
+            pointer-events: none; /* Klik tembus ke shutter */
+        }
+
+        .filter-dot {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.5);
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Navigasi Bawah Snapchat Style (Transparan) */
+        .bottom-nav-cam {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: linear-gradient(transparent, rgba(0,0,0,0.5));
+            display: flex;
+            justify-content: space-around;
+            padding: 20px 0 40px;
+            z-index: 20;
+        }
+
+        .nav-item-cam {
+            color: white;
+            font-size: 24px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-container" style="padding: 0; background: #000;">
+        <div class="camera-container">
+            
+            <!-- Video Preview dari Kamera -->
+            <video id="video-preview" autoplay playsinline></video>
+            <canvas id="canvas" style="display:none;"></canvas>
+
+            <!-- Tombol Atas (Flash, Flip, Settings) -->
+            <div class="camera-top-tools">
+                <button class="tool-btn">⚡</button>
+                <button class="tool-btn" onclick="switchCamera()">🔄</button>
+                <button class="tool-btn">⚙️</button>
+            </div>
+
+            <!-- Filter Bubbles (Visual saja) -->
+            <div class="filter-scroll">
+                <div class="filter-dot"></div>
+                <div style="width: 80px;"></div> <!-- Spasi untuk shutter -->
+                <div class="filter-dot"></div>
+            </div>
+
+            <!-- Tombol Jepret -->
+            <div class="shutter-container">
+                <div class="shutter-btn" onclick="takePhoto()">
+                    <div class="shutter-inner"></div>
+                </div>
+            </div>
+
+
+            <!-- Navigasi Bawah Transparan -->
+            <nav class="bottom-nav-cam">
+                <a href="map.php" class="nav-item-cam">📍</a>
+                <a href="chat.php" class="nav-item-cam">💬</a>
+                <a href="index.php" class="nav-item-cam" style="font-size: 32px;">🏠</a>
+                <a href="#" class="nav-item-cam">👥</a>
+                <a href="profile.php" class="nav-item-cam">👤</a>
+            </nav>
+
+        </div>
+    </div>
+
+    <script>
+      const video = document.getElementById('video-preview');
+let currentCamera = "user";
+
+// =======================
+// INIT CAMERA
+// =======================
+async function initCamera() {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: currentCamera },
+            audio: false
+        });
+        video.srcObject = stream;
+    } catch (err) {
+        console.error(err);
+        alert("Kamera tidak bisa diakses");
+    }
+}
+
+// =======================
+// SWITCH CAMERA
+// =======================
+async function switchCamera() {
+    currentCamera = currentCamera === "user" ? "environment" : "user";
+    initCamera();
+}
+
+// =======================
+// TAKE PHOTO + UPLOAD
+// =======================
+function takePhoto(){
+
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    if(!video.videoWidth){
+        alert("Kamera belum siap");
+        return;
+    }
+
+    // ukuran canvas
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    // ambil frame video
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    // efek flash 🔥
+    document.body.style.background = "white";
+    setTimeout(()=> document.body.style.background = "black", 100);
+
+    // convert ke blob
+    canvas.toBlob(function(blob){
+
+        if(!blob){
+            alert("Gagal ambil foto");
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(function(pos){
+
+            let lat = pos.coords.latitude;
+            let lng = pos.coords.longitude;
+
+            let formData = new FormData();
+            formData.append("image", blob, "story.png");
+            formData.append("lat", lat);
+            formData.append("lng", lng);
+
+            fetch("upload_story.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(res => res.json())
+            .then(res => {
+                console.log(res);
+
+                if(res.status === "success"){
+                    alert("🔥 Story berhasil upload!");
+                }else{
+                    alert("Upload gagal");
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Error upload");
+            });
+
+        }, function(){
+            alert("Lokasi tidak diizinkan");
+        });
+
+    }, "image/png");
+}
+
+// =======================
+initCamera();
+    </script>
+</body>
+</html>

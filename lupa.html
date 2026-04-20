@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password - NYMATE</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        .auth-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 30px;
+            text-align: center;
+        }
+
+        /* Ikon Kunci Besar */
+        .icon-box {
+            width: 100px;
+            height: 100px;
+            background-color: #FFCCBC; /* Orange pastel */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 20px rgba(255, 204, 188, 0.4);
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .desc {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .form-group {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .auth-input {
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 20px;
+            border: none;
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            outline: none;
+            font-family: inherit;
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 15px;
+            border-radius: 20px;
+            border: none;
+            background-color: #81D4FA; /* Biru cerah */
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(129, 212, 250, 0.4);
+        }
+
+        .back-to-login {
+            margin-top: 30px;
+            font-size: 14px;
+            text-decoration: none;
+            color: #888;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .back-to-login:hover {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-container">
+        <div class="auth-wrapper">
+            <!-- Ikon sebagai pengganti logo sementara -->
+            <div class="icon-box">🔑</div>
+
+            <h2>Forgot Password?</h2>
+            <p class="desc">
+                Don't worry! It happens. Please enter the email address associated with your account.
+            </p>
+
+            <form action="#" style="width: 100%;">
+                <div class="form-group">
+                    <input type="email" class="auth-input" placeholder="Enter your email" required>
+                </div>
+                
+                <button type="submit" class="auth-btn">RESET PASSWORD</button>
+            </form>
+
+            <a href="login.php" class="back-to-login">
+                <span>←</span> Back to Login
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>

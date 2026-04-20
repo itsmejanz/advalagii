@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYMATE Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-cream: #EEDDAA;
+            --header-blue: #87CEEB;
+            --yellow-accent: #FFD25A;
+            --red-accent: #D90000;
+            --feed-blue: #98D8EF;
+            --dark-border: #444;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .phone-container {
+            width: 100%;
+            max-width: 430px;
+            background-color: var(--bg-cream);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            border: 5px solid #333;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Container Peta Leaflet */
+        #map {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 300px; /* Area peta di belakang */
+            z-index: 0;
+        }
+
+        /* Overlay transparan agar teks terbaca di atas peta */
+        .map-overlay {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(to bottom, rgba(135,206,235,0.4), var(--bg-cream));
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            padding: 15px;
+            margin-top: 20px; /* Memberi ruang di atas */
+        }
+
+        .greeting-section {
+            text-align: center;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .greeting-section h1 {
+            font-family: 'Luckiest Guy', cursive;
+            font-size: 3rem;
+            margin: 0;
+        }
+
+        .greeting-section .date {
+            font-size: 1.2rem;
+            font-weight: 900;
+        }
+
+        .counter-container {
+            background: linear-gradient(to bottom, #87CEEB, #5fb6db);
+            border: 4px solid var(--dark-border);
+            border-radius: 150px 150px 20px 20px;
+            padding: 40px 20px 20px 20px;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .numbers {
+            font-family: 'Luckiest Guy', cursive;
+            font-size: 4.5rem;
+            color: white;
+            letter-spacing: 10px;
+        }
+
+      /* ===== FEED RESPONSIVE FIX ===== */
+
+.feed-item {
+    background: white;
+    border-radius: 15px;
+    padding: 10px;
+    margin-bottom: 12px;
+    border: 2px solid var(--dark-border);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* header (avatar + username) */
+.feed-header-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* avatar */
+.feed-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+/* username + time */
+.feed-username {
+    font-weight: 900;
+    font-size: 0.9rem;
+}
+
+.feed-time {
+    font-size: 0.7rem;
+    color: gray;
+}
+
+/* gambar biar ga keluar */
+.feed-image {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-top: 8px;
+    display: block;
+}
+
+/* caption biar wrap */
+.feed-caption {
+    font-size: 0.8rem;
+    margin-top: 6px;
+    word-wrap: break-word;
+}
+
+/* action */
+.feed-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 8px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+/* ===== MOBILE EXTRA FIX ===== */
+@media (max-width: 400px) {
+    .feed-username {
+        font-size: 0.8rem;
+    }
+
+    .feed-caption {
+        font-size: 0.75rem;
+    }
+}
+
+.feed-box {
+    background-color: var(--feed-blue);
+    border: 3px solid var(--dark-border);
+    border-radius: 25px;
+    padding: 15px;
+    overflow: hidden; /* penting */
+}
+
+        .update-text {
+            font-size: 0.7rem;
+            font-weight: 900;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        .middle-cards {
+            display: grid;
+            grid-template-columns: 1.8fr 1fr;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .card {
+            border-radius: 20px;
+            border: 3px solid var(--dark-border);
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+            text-decoration: none; /* Hilangkan garis bawah link */
+            display: block;
+        }
+
+        .card:active { transform: scale(0.95); }
+
+        .about-card { background-color: var(--yellow-accent); cursor: default; }
+        .hotspot-card { background-color: var(--red-accent); color: white; }
+
+        .hotspot-card h2 { font-family: 'Luckiest Guy', cursive; margin: 0; font-size: 1.1rem; }
+        .flame-icon { font-size: 3.5rem; margin: 5px 0; }
+
+        /* Feed Style */
+        .feed-header {
+            background-color: var(--yellow-accent);
+            border: 3px solid var(--dark-border);
+            width: fit-content;
+            margin: 25px auto -15px auto;
+            padding: 5px 30px;
+            border-radius: 50px 50px 0 0;
+            font-family: 'Luckiest Guy', cursive;
+            font-size: 1.6rem;
+            position: relative;
+            z-index: 3;
+        }
+
+        .feed-box {
+            background-color: var(--feed-blue);
+            border: 3px solid var(--dark-border);
+            border-radius: 25px;
+            padding: 20px 15px;
+        }
+
+        .bottom-nav {
+            background-color: var(--yellow-accent);
+            border-top: 3px solid var(--dark-border);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            margin-top: auto; /* Navigasi tetap di bawah */
+            border-radius: 20px 20px 0 0;
+        }
+
+        .nav-item {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+        .nav-home { background: #87CEEB; padding: 10px; border-radius: 50%; border: 3px solid white; margin-top: -30px; }
+    </style>
+</head>
+<body>
+
+<div class="phone-container">
+    <!-- Peta Leaflet -->
+    <div id="map"></div>
+    <div class="map-overlay"></div>
+    
+    <div class="content">
+        <section class="greeting-section">
+            <h1>HI, NYMATE!</h1>
+            <div class="date" id="current-date">DD/MM/YYYY</div>
+        </section>
+
+        <div class="counter-container">
+            <div class="numbers">12345</div>
+            <!-- Waktu Update Otomatis -->
+            <div class="update-text">DENGUE DATA: LAST UPDATE <span id="last-update">00:00:00</span></div>
+        </div>
+
+        <div class="middle-cards">
+            <div class="card about-card">
+                <h2 style="font-family:'Luckiest Guy'; margin:0;">ABOUT DENGUE!</h2>
+                <p style="font-size:0.7rem; font-weight:bold; color:white;">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+            </div>
+
+            <!-- Tombol Hotspot Buka Halaman Lain -->
+            <a href="hotspot.html" class="card hotspot-card">
+                <h2>MONTHLY</h2>
+                <div class="flame-icon">🔥</div>
+                <h2>HOTSPOT</h2>
+            </a>
+        </div>
+
+        <div class="feed-header">NYMO FEED</div>
+
+<div class="feed-box">
+
+    <!-- POST 1 -->
+    <div class="feed-item">
+        <div class="feed-header-row">
+            <img src="https://i.pravatar.cc/100?img=1" class="feed-avatar">
+            <div>
+                <div class="feed-username">andi</div>
+                <div class="feed-time">2 menit lalu</div>
+            </div>
+        </div>
+
+        <img src="https://picsum.photos/400/200?1" class="feed-image">
+
+        <div class="feed-caption">
+            Genangan air di sini banyak banget ⚠️ bisa jadi sarang nyamuk
+        </div>
+
+        <div class="feed-actions">
+            <span>❤️ 12</span>
+            <span>💬 3</span>
+        </div>
+    </div>
+
+    <!-- POST 2 -->
+    <div class="feed-item">
+        <div class="feed-header-row">
+            <img src="https://i.pravatar.cc/100?img=2" class="feed-avatar">
+            <div>
+                <div class="feed-username">siti</div>
+                <div class="feed-time">10 menit lalu</div>
+            </div>
+        </div>
+
+        <img src="https://picsum.photos/400/200?2" class="feed-image">
+
+        <div class="feed-caption">
+            Fogging di daerah rumah 🔥 semoga makin aman dari DBD
+        </div>
+
+        <div class="feed-actions">
+            <span>❤️ 25</span>
+            <span>💬 8</span>
+        </div>
+    </div>
+
+    <!-- POST 3 -->
+    <div class="feed-item">
+        <div class="feed-header-row">
+            <img src="https://i.pravatar.cc/100?img=3" class="feed-avatar">
+            <div>
+                <div class="feed-username">budi</div>
+                <div class="feed-time">1 jam lalu</div>
+            </div>
+        </div>
+
+        <img src="https://picsum.photos/400/200?3" class="feed-image">
+
+        <div class="feed-caption">
+            Jangan lupa 3M: Menguras, Menutup, Mengubur 💧
+        </div>
+
+        <div class="feed-actions">
+            <span>❤️ 40</span>
+            <span>💬 15</span>
+        </div>
+    </div>
+
+</div>
+
+   <nav class="bottom-nav">
+    <a href="index.html" class="nav-item active">
+        <span class="material-symbols-outlined">home</span>
+    </a>
+    <a href="peta.html" class="nav-item">
+        <span class="material-symbols-outlined">location_on</span>
+    </a>
+    <a href="kamera.html" class="nav-item camera">
+        <span class="material-symbols-outlined">photo_camera</span>
+    </a>
+    <a href="chat.html" class="nav-item">
+        <span class="material-symbols-outlined">chat</span>
+    </a>
+    <a href="profile.html" class="nav-item">
+        <span class="material-symbols-outlined">person</span>
+    </a>
+</nav>
+</div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    // 1. Inisialisasi Peta
+    const map = L.map('map', {
+        zoomControl: false,
+        attributionControl: false
+    }).setView([-6.200000, 106.816666], 13); // Default Jakarta
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    // Ambil Lokasi User
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+            const { latitude, longitude } = position.coords;
+            map.setView([latitude, longitude], 15);
+            L.marker([latitude, longitude]).addTo(map);
+        });
+    }
+
+    // 2. Fungsi Update Waktu Otomatis
+    function updateDateTime() {
+        const now = new Date();
+        
+        // Format Tanggal (DD/MM/YYYY)
+        const dateStr = now.toLocaleDateString('id-ID', {
+            day: '2-digit', month: '2-digit', year: 'numeric'
+        });
+        document.getElementById('current-date').innerText = dateStr;
+
+        // Format Jam Update (HH:mm:ss)
+        const timeStr = now.toLocaleTimeString('id-ID', {
+            hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit'
+        });
+        document.getElementById('last-update').innerText = timeStr;
+    }
+
+    // Update setiap detik
+    setInterval(updateDateTime, 1000);
+    updateDateTime();
+</script>
+
+</body>
+</html>
